@@ -1,9 +1,9 @@
-package com.example.homework1.delegates
+package com.example.todo.delegates
 
 import android.annotation.SuppressLint
 import android.view.MotionEvent
-import com.example.homework1.TodoAdapter
-import com.example.homework1.databinding.NewItemBinding
+import com.example.todo.TodoAdapter
+import com.example.todo.databinding.NewItemBinding
 import com.hannesdorfmann.adapterdelegates4.AdapterDelegate
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
 

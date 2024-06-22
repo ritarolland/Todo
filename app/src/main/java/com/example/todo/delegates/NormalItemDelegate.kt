@@ -1,4 +1,4 @@
-package com.example.homework1.delegates
+package com.example.todo.delegates
 import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.opengl.Visibility
@@ -6,11 +6,11 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.marginLeft
-import com.example.homework1.Importance
-import com.example.homework1.R
-import com.example.homework1.TodoItem
+import com.example.todo.Importance
+import com.example.todo.R
+import com.example.todo.TodoItem
 import com.hannesdorfmann.adapterdelegates4.dsl.adapterDelegateViewBinding
-import com.example.homework1.databinding.TodoItemBinding
+import com.example.todo.databinding.TodoItemBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 

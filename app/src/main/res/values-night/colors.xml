@@ -1,3 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="White">#FFFFFFFF</color>
+    <color name="BackPrimary">#161618</color>
+    <color name="BackSecondary">#252528</color>
+    <color name="BackElevated">#3C3C3F</color>
+    <color name="LabelPrimary">#FFFFFF</color>
+    <color name="LabelSecondary">#99FFFFFF</color>
+    <color name="LabelTertiary">#66FFFFFF</color>
+    <color name="LabelDisable">#26FFFFFF</color>
+    <color name="SupportSeparator">#33FFFFFF</color>
+    <color name="SupportOverlay">#52000000</color>
+    <color name="Red">#FF3B30</color>
+    <color name="Green">#34C759</color>
+    <color name="Blue">#007AFF</color>
+    <color name="Gray">#8E8E93</color>
+    <color name="GrayLight">#48484A</color>
 </resources>

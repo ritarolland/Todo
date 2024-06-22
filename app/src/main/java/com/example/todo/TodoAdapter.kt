@@ -1,4 +1,4 @@
-package com.example.homework1
+package com.example.todo
 
 import android.annotation.SuppressLint
 import android.graphics.Paint
@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.homework1.databinding.TodoItemBinding
-import com.example.homework1.delegates.endTextItemDelegate
-import com.example.homework1.delegates.normalItemDelegate
+import com.example.todo.databinding.TodoItemBinding
+import com.example.todo.delegates.endTextItemDelegate
+import com.example.todo.delegates.normalItemDelegate
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 
 class TodoAdapter(

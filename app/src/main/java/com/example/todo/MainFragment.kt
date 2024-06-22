@@ -1,59 +1,120 @@
 package com.example.todo
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.todo.databinding.FragmentMainBinding
+import java.util.Date
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class MainFragment : Fragment(), OnNewTaskAddedListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MainFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MainFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentMainBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var taskAdapter : TodoAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val tasks = mutableListOf(
+        TodoItem("1", "Task 1", Importance.NORMAL, Date(), false, Date()),
+        TodoItem("2", "Task 2 врслсоиоиам ылтмлиалом олавмо лтоми омао аомловииаоимовим воаимоиоимаоим ваоииам авмоиолмаи воилмаорвоам ирвприопиолипв прирвоипомио мваооиммлиоам о оаивм оаимвои оавми", Importance.HIGH, null, true, Date(), Date()),
+        TodoItem("3", "Task 3", Importance.LOW, Date(), false, Date()),
+        TodoItem("1", "Task 1", Importance.NORMAL, Date(), false, Date()),
+        TodoItem("2", "Task 2", Importance.HIGH, null, true, Date(), Date()),
+        TodoItem("3", "Task 3", Importance.LOW, Date(), false, Date()),
+        TodoItem("1", "Task 1", Importance.NORMAL, Date(), false, Date()),
+        TodoItem("2", "Task 2", Importance.HIGH, null, true, Date(), Date()),
+        TodoItem("3", "Task 3", Importance.LOW, Date(), false, Date()),
+        TodoItem("1", "Task 1", Importance.NORMAL, Date(), false, Date()),
+        TodoItem("2", "Task 2", Importance.HIGH, null, true, Date(), Date()),
+        TodoItem("3", "Task 3", Importance.LOW, Date(), false, Date()),
+        TodoItem("1", "Task 1", Importance.NORMAL, Date(), false, Date()),
+        TodoItem("2", "Task 2", Importance.HIGH, null, true, Date(), Date()),
+        TodoItem("3", "Task 3", Importance.LOW, Date(), false, Date()),
+        TodoItem("1", "Task 1", Importance.NORMAL, Date(), false, Date()),
+        TodoItem("2", "Task 2", Importance.HIGH, null, true, Date(), Date()),
+        TodoItem("3", "Task 3", Importance.LOW, Date(), false, Date()),
+        "Новое"
+
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+    ): View {
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MainFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MainFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.floatingButton.setOnClickListener { openAddFragment() }
+        taskAdapter = TodoAdapter(tasks,
+            onTaskClick = { todoItem ->
+                val bundle = Bundle().apply {
+                    putParcelable("todo_item_key", todoItem)
                 }
-            }
+                val fragment = AddFragment().apply {
+                    arguments = bundle
+                }
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            },
+            onEndItemClick = {
+                val transaction = parentFragmentManager.beginTransaction()
+                transaction.replace(R.id.fragment_container, AddFragment())
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }, updateCompletedTasksCount = {updateCompletedTasksCount()})
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = taskAdapter
+        }
+
+        updateCompletedTasksCount()
+
+        binding.eye.setOnClickListener{taskAdapter.toggleShowCompletedTasks()}
+
+        val swipeHandler = SwipeToDeleteCallback(requireContext(), taskAdapter)
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateCompletedTasksCount() {
+        val completedTasksCount = taskAdapter.countCompletedTasks()
+        binding.done.text = "Выполнено - $completedTasksCount"
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateTodoList(newList: List<TodoItem>) {
+        tasks.clear()
+        tasks.addAll(newList)
+        taskAdapter.notifyDataSetChanged()
+    }
+
+    private fun openAddFragment() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, AddFragment())
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onNewTaskAdded(task: TodoItem) {
+        taskAdapter.run {
+            addTask(task)
+            notifyDataSetChanged()
+        }
     }
 }

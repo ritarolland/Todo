@@ -1,4 +1,4 @@
-package com.example.homework1
+package com.example.todo
 
 enum class Importance {
     LOW, NORMAL, HIGH

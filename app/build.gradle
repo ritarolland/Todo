@@ -7,6 +7,10 @@ android {
     namespace 'com.example.todo'
     compileSdk 34
 
+    viewBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "com.example.todo"
         minSdk 24
@@ -33,6 +37,8 @@ android {
 }
 
 dependencies {
+    implementation libs.adapterdelegates4.kotlin.dsl
+    implementation libs.adapterdelegates4.kotlin.dsl.viewbinding
 
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat

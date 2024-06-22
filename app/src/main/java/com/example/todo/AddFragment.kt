@@ -1,31 +1,33 @@
 package com.example.todo
 
+import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import com.example.todo.databinding.FragmentAddBinding
+import java.util.Calendar
+import java.util.Date
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AddFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AddFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var _binding: FragmentAddBinding? = null
+    private val binding get() = _binding!!
+
+    private val calendar = Calendar.getInstance()
+    private var currentDate:Date? = null
+
+    private var listener: OnNewTaskAddedListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnNewTaskAddedListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnNewTaskAddedListener")
         }
     }
 
@@ -33,27 +35,92 @@ class AddFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add, container, false)
+        _binding = FragmentAddBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val spinner = binding.spinnerImportance
+        spinner.adapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.importance_options,
+            android.R.layout.simple_spinner_item
+        )
+
+        binding.switchCalendar.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                showDatePicker()
+            } else {
+                binding.date.visibility = View.INVISIBLE
             }
+        }
+
+        binding.delete.setOnClickListener{
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+        binding.save.setOnClickListener {
+            val selectedImportance = spinner.selectedItem.toString()
+            val newTask = TodoItem(
+                "1",
+                binding.editText.text.toString(),
+                getImportanceFromString(selectedImportance),
+                currentDate,
+                false,
+                Date()
+            )
+            try {
+                listener?.onNewTaskAdded(newTask)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        binding.back.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
+
+    private fun showDatePicker() {
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            DatePickerDialog.OnDateSetListener { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedCalendar = Calendar.getInstance()
+                selectedCalendar.set(selectedYear, selectedMonth, selectedDay)
+                val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                binding.date.text = selectedDate
+
+                currentDate = selectedCalendar.time
+            },
+            year, month, day
+        )
+
+        datePickerDialog.show()
+    }
+
+    private fun getImportanceFromString(importance: String): Importance {
+        return when (importance) {
+            "Низкая" -> Importance.LOW
+            "Обычная" -> Importance.NORMAL
+            "Высокая" -> Importance.HIGH
+            else -> Importance.NORMAL
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
 }
