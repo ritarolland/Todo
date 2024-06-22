@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CollapsedToolbarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/LabelPrimary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+
+    <style name="ExpandedToolbarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textColor">@color/LabelPrimary</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+    </style>
+</resources>
