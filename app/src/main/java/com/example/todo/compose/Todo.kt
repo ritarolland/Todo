@@ -95,7 +95,7 @@ fun Todo(
                         fontSize = 16.sp,
                         maxLines = 3,
                         overflow = TextOverflow.Ellipsis,
-                        color = Color.Black,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         style = if (item.isDone) TextStyle(textDecoration = TextDecoration.LineThrough) else TextStyle()
                     )
                 }
@@ -107,7 +107,7 @@ fun Todo(
                             Locale.getDefault()
                         ).format(item.deadline),
                         Modifier.padding(bottom = 14.dp, top = 8.dp, start = 4.dp),
-                        color = Color.Black
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
 
