@@ -2,11 +2,13 @@ package com.example.todo.compose
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.res.Configuration
 import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,9 +16,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -52,15 +56,17 @@ import com.example.todo.Importance
 import com.example.todo.R
 import com.example.todo.TodoItem
 import com.example.todo.TodoViewModel
+import com.example.todo.ui.ToDoAppTheme
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddScreen(id: String?, navController: NavHostController,
+fun AddScreen(id: String?, navController:NavHostController,
               viewModel: TodoViewModel,) {
 
     var todoText by remember { mutableStateOf("") }
@@ -84,12 +90,14 @@ fun AddScreen(id: String?, navController: NavHostController,
     Scaffold(
         topBar = {
             TopAppBar(
+                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
                 title = { Text("") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             painter = painterResource(id = R.drawable.close),
-                            contentDescription = "Back"
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },
@@ -134,6 +142,7 @@ fun AddScreen(id: String?, navController: NavHostController,
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(MaterialTheme.colorScheme.surface)
                 .padding(horizontal = 16.dp)
         ) {
             Box(
@@ -141,8 +150,8 @@ fun AddScreen(id: String?, navController: NavHostController,
                     .fillMaxWidth()
                     .padding(top = 72.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(Color.Gray.copy(alpha = 0.1f)),
-                contentAlignment = Alignment.TopStart
+                    .background(MaterialTheme.colorScheme.surfaceTint),
+                contentAlignment = Alignment.TopStart,
             ) {
                 TextField(
                     minLines = 3,
@@ -150,7 +159,9 @@ fun AddScreen(id: String?, navController: NavHostController,
                         .fillMaxWidth(),
                     value = todoText,
                     onValueChange = { todoText = it },
-                    placeholder = { Text("Что нужно сделать") },
+                    placeholder = { Text(
+                        text = "Что нужно сделать",
+                        color = MaterialTheme.colorScheme.onSecondary) },
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent
@@ -161,6 +172,7 @@ fun AddScreen(id: String?, navController: NavHostController,
             Text(
                 text = "Важность",
                 fontSize = 16.sp,
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(top = 20.dp)
             )
 
@@ -178,7 +190,7 @@ fun AddScreen(id: String?, navController: NavHostController,
                     ) {
                         Text(
                             text = selectedImportance,
-                            color = Color.Black,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.labelSmall
                             )
                     }
@@ -229,13 +241,14 @@ fun AddScreen(id: String?, navController: NavHostController,
                     Text(
                         text = "Сделать до: ",
                         fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
                         text = date,
                         fontSize = 16.sp,
-                        color = Color.Gray.copy(alpha = 1f)
+                        color = MaterialTheme.colorScheme.onTertiary
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
@@ -289,13 +302,13 @@ fun AddScreen(id: String?, navController: NavHostController,
                 Icon(
                     painter = painterResource(id = R.drawable.delete_red),
                     contentDescription = "Delete icon",
-                    tint = Color.Red,
+                    tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier.size(24.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "Удалить",
-                    color = Color.Red,
+                    color = MaterialTheme.colorScheme.error,
                     fontSize = 16.sp
                 )
             }
@@ -321,13 +334,26 @@ fun getImportanceFromString(importance: String): Importance {
 }
 
 
-@Preview(showBackground = true)
+
+
+@Preview
 @Composable
-fun PreviewAddScreen() {
+fun PreviewScreen() {
     val navController = rememberNavController()
     val viewModel = TodoViewModel()
-    MaterialTheme () {
-        AddScreen(null, navController = navController, viewModel = viewModel)
-    }
 
+    ToDoAppTheme(dynamicColor = false, darkTheme = false) {
+        AddScreen(null, navController, viewModel)
+    }
+}
+
+@Preview
+@Composable
+fun PreviewScreenDark() {
+    val navController = rememberNavController()
+    val viewModel = TodoViewModel()
+
+    ToDoAppTheme(dynamicColor = false, darkTheme = true) {
+        AddScreen(null, navController, viewModel)
+    }
 }

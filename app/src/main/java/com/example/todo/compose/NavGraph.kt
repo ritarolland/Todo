@@ -29,10 +29,10 @@ fun NavGraph(navController: NavHostController) {
         }
         composable("add/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")
-            AddScreen(id = id, navController = navController, viewModel = viewModel)
+            AddScreen(id = id, navController=navController,viewModel = viewModel)
         }
         composable("add") {
-            AddScreen(null, navController = navController, viewModel = viewModel)
+            AddScreen(null,navController=navController, viewModel = viewModel)
         }
     }
 }
