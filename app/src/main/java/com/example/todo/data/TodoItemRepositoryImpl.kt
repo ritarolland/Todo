@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import retrofit2.Response
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class TodoItemsRepositoryImpl @Inject constructor(
     private val todoItemDao: TodoItemDao,
     private val todoApiService: ApiService,
@@ -29,12 +31,12 @@ class TodoItemsRepositoryImpl @Inject constructor(
     override fun getAllTodoItems(): Flow<List<TodoItem>> = flow {
         if (networkChecker.isNetworkAvailable()) {
 
-            lateinit var remoteItems: List<TodoItem>
             val response = handle {
                 todoApiService.getAll()
             }
-            remoteItems = response.list.map { serverTodoItemMapper.mapTo(it) }
+            val remoteItems = response.list.map { serverTodoItemMapper.mapTo(it) }
             todoItemDao.insertAll(remoteItems)
+            lastKnownRevisionRepository.updateRevision(response.revision)
         }
         emitAll(todoItemDao.getAll())
     }

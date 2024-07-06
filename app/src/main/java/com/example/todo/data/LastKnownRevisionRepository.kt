@@ -1,7 +1,11 @@
 package com.example.todo.data
 
-class LastKnownRevisionRepository {
+import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
+class LastKnownRevisionRepository @Inject constructor()
+{
     var lastKnownRevision: Int? = 5
         private set
 
