@@ -4,8 +4,9 @@
     <string name="done">Выполнено -</string>
     <string name="Visibility">visibility</string>
     <string name="button_add">Кнопка Добавить</string>
+    <string name="button_back">Кнопка Назад</string>
+    <string name="date_and_time">Дата и время</string>
     <string name="newTodo">Новое</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save">СОХРАНИТЬ</string>
     <string name="what_to_do">Что надо сделать...</string>
@@ -13,8 +14,8 @@
     <string name="until">Сделать до</string>
     <string name="delete">Удалить</string>
     <string-array name="importance_options">
-        <item>Низкая</item>
-        <item>Обычная</item>
+        <item>Нет</item>
         <item>Высокая</item>
+        <item>Низкая</item>
     </string-array>
 </resources>

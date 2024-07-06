@@ -1,32 +1,22 @@
 package com.example.todo
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.navigation.compose.rememberNavController
+import com.example.todo.ui.NavGraph
+import com.example.todo.theme.ToDoAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity(), OnNewTaskAddedListener {
-
-
-    private val todosList = mutableListOf<TodoItem>()
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, MainFragment())
-                .commit()
-        }
-    }
-
-    override fun onNewTaskAdded(task: TodoItem) {
-        todosList.add(task)
-
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-        if (currentFragment is MainFragment) {
-            currentFragment.updateTodoList(todosList)
+        setContent {
+            ToDoAppTheme {
+                val navController = rememberNavController()
+                NavGraph(navController = navController)
+            }
         }
     }
 }
