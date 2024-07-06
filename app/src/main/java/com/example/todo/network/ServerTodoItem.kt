@@ -1,4 +1,4 @@
-package com.example.todo
+package com.example.todo.network
 
 import com.google.gson.annotations.SerializedName
 

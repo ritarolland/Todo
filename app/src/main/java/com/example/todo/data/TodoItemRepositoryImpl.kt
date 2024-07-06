@@ -1,46 +1,91 @@
-package com.example.todo.data/*
-package com.example.homework1.data
+package com.example.todo.data
 
-import com.example.homework1.domain.models.TodoItem
+import android.util.Log
+import com.example.todo.domain.models.TodoItem
+import com.example.todo.domain.models.TodoItemDao
+import com.example.todo.network.ApiService
+import com.example.todo.network.NetworkException
+import com.example.todo.network.ServerTodoItemMapper
+import com.example.todo.network.TodoResponse
+import com.example.todo.network.UpdateSingleTodoRequest
+import com.example.todo.utils.NetworkChecker
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import retrofit2.Response
+import javax.inject.Inject
 
-class TodoItemRepositoryImpl(
-    private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource
+class TodoItemsRepositoryImpl @Inject constructor(
+    private val todoItemDao: TodoItemDao,
+    private val todoApiService: ApiService,
+    private val networkChecker: NetworkChecker,
+    private val serverTodoItemMapper: ServerTodoItemMapper,
+    private val lastKnownRevisionRepository: LastKnownRevisionRepository
 ) : TodoItemsRepository {
 
-    override suspend fun getAllTodoItems(): Flow<List<TodoItem>> {
-        return try {
-            val tasks = remoteDataSource.getTasks()
-            localDataSource.saveTasks(tasks)
-            localDataSource.getAllTodoItems()
-        } catch (e: Exception) {
-            localDataSource.getAllTodoItems()
-        }
-    }
+    val listOfToDo: Flow<List<TodoItem>> = getAllTodoItems()
 
-    override suspend fun addOrEditTodoItem(todoItem: TodoItem) {
-        try {
-            remoteDataSource.addOrEditTodoItem(todoItem)
-            localDataSource.addOrEditTodoItem(todoItem)
-        } catch (e: Exception) {
-            localDataSource.addOrEditTodoItem(todoItem)
-        }
-    }
 
-    override suspend fun deleteTodoItem(todoItem: TodoItem) {
-        try {
-            remoteDataSource.deleteTodoItem(todoItem)
-            localDataSource.deleteTodoItem(todoItem)
-        } catch (e: Exception) {
-            localDataSource.deleteTodoItem(todoItem)
+    override fun getAllTodoItems(): Flow<List<TodoItem>> = flow {
+        if (networkChecker.isNetworkAvailable()) {
+
+            lateinit var remoteItems: List<TodoItem>
+            val response = handle {
+                todoApiService.getAll()
+            }
+            remoteItems = response.list.map { serverTodoItemMapper.mapTo(it) }
+            todoItemDao.insertAll(remoteItems)
         }
+        emitAll(todoItemDao.getAll())
     }
 
     override suspend fun updateChecked(id: String, isDone: Boolean) {
-        val todoItem = localDataSource.getTodoItemById(id)?.copy(isDone = isDone)
-        todoItem?.let {
-            addOrEditTodoItem(it)
+        todoItemDao.updateChecked(id, isDone)
+    }
+
+    override suspend fun getToDoById(id: String): TodoItem {
+        return todoItemDao.getToDoById(id)
+    }
+
+    private val TAG = "AAA"
+
+    override suspend fun addOrEditToDo(item: TodoItem) {
+        try {
+            if (networkChecker.isNetworkAvailable()) {
+                val response = todoApiService.addToDoItem(
+                    UpdateSingleTodoRequest(
+                        serverTodoItemMapper.mapFrom(item)
+                    )
+                )
+                val body = response.body()
+                if (response.isSuccessful && body!= null) {
+                    lastKnownRevisionRepository.updateRevision(body.revision)
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Ошибка при выполнении upsertTodo: ${e.message}", e)
+        }
+        todoItemDao.upsert(item)
+    }
+
+    override suspend fun deleteToDo(id: String) {
+        try {
+            todoApiService.deleteTodo(id)
+            todoItemDao.deleteToDoById(id)
+        } catch (e: Exception) {
+            todoItemDao.deleteToDoById(id)
         }
     }
-}*/
+
+    private suspend fun <T : TodoResponse> handle(block: suspend () -> Response<T>): T {
+        val response = block.invoke()
+        val body = response.body()
+        if (response.isSuccessful && body != null) {
+            lastKnownRevisionRepository.updateRevision(body.revision)
+            return body
+        } else {
+            throw NetworkException(response.errorBody()?.string())
+        }
+    }
+
+}

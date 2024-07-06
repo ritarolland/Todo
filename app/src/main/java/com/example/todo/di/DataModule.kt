@@ -3,11 +3,11 @@ package com.example.todo.di
 import android.content.ContentResolver
 import android.content.Context
 import androidx.room.Room
-import com.example.todo.ApiService
-import com.example.todo.AuthInterceptor
-import com.example.todo.CustomHostnameVerifier
-import com.example.todo.LastKnownRevisionInterceptor
-import com.example.todo.ServerTodoItemMapper
+import com.example.todo.network.ApiService
+import com.example.todo.network.interceptors.AuthInterceptor
+import com.example.todo.network.CustomHostnameVerifier
+import com.example.todo.network.interceptors.LastKnownRevisionInterceptor
+import com.example.todo.network.ServerTodoItemMapper
 import com.example.todo.data.DeviceNameRepository
 import com.example.todo.data.LastKnownRevisionRepository
 import com.example.todo.data.TodoDatabase

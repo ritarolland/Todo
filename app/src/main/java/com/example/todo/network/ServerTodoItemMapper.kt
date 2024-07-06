@@ -1,4 +1,4 @@
-package com.example.todo
+package com.example.todo.network
 
 import com.example.todo.data.DeviceNameRepository
 import com.example.todo.domain.models.TodoItem

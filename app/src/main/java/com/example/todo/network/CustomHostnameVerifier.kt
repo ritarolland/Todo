@@ -1,4 +1,4 @@
-package com.example.todo
+package com.example.todo.network
 
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSession

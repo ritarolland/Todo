@@ -1,4 +1,4 @@
-package com.example.todo
+package com.example.todo.network
 
 data class GetTodoListResponse (
     override val status: String,
