@@ -6,10 +6,10 @@ import androidx.room.Room
 import com.example.todo.network.ApiService
 import com.example.todo.network.interceptors.AuthInterceptor
 import com.example.todo.network.CustomHostnameVerifier
-import com.example.todo.network.interceptors.LastKnownRevisionInterceptor
 import com.example.todo.network.ServerTodoItemMapper
 import com.example.todo.data.DeviceNameRepository
 import com.example.todo.data.LastKnownRevisionRepository
+import com.example.todo.data.ListRepository
 import com.example.todo.data.TodoDatabase
 import com.example.todo.data.TodoItemsRepository
 import com.example.todo.data.TodoItemsRepositoryImpl
@@ -68,6 +68,23 @@ object DataModule {
     }
 
     @Provides
+    fun provideListRepository(
+        todoItemDao: TodoItemDao,
+        todoApiService: ApiService,
+        networkChecker: NetworkChecker,
+        serverTodoItemMapper: ServerTodoItemMapper,
+        lastKnownRevisionRepository: LastKnownRevisionRepository
+    ): ListRepository {
+        return ListRepository(
+            todoItemDao,
+            todoApiService,
+            networkChecker,
+            serverTodoItemMapper,
+            lastKnownRevisionRepository
+        )
+    }
+
+    @Provides
     fun provideContentResolver(@ApplicationContext context: Context): ContentResolver {
         return context.contentResolver
     }
@@ -91,19 +108,18 @@ object DataModule {
 
 
 
-    @Provides
+    /*@Provides
     @Singleton
     fun provideLastRevisionInterceptor(lastKnownRevisionRepository: LastKnownRevisionRepository): LastKnownRevisionInterceptor {
         //val token = "Cerin"
         return LastKnownRevisionInterceptor(lastKnownRevisionRepository)
-    }
+    }*/
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(authInterceptor: AuthInterceptor, lastKnownRevisionInterceptor: LastKnownRevisionInterceptor): OkHttpClient {
+    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
-            .addInterceptor(lastKnownRevisionInterceptor)
             .hostnameVerifier(CustomHostnameVerifier("beta.mrdekk.ru"))
             .build()
     }

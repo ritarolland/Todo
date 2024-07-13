@@ -25,7 +25,10 @@ interface ApiService {
     suspend fun getToDoItemById(@Path("id") id: String): Response<GetSingleTodoResponse>
 
     @POST("list")
-    suspend fun addToDoItem(@Body request: UpdateSingleTodoRequest): Response<GetSingleTodoResponse>
+    suspend fun addToDoItem(
+        @Header("X-Last-Known-Revision") revision: String,
+        @Body request: UpdateSingleTodoRequest
+    ): Response<GetSingleTodoResponse>
 
     @PUT("list/{id}")
     suspend fun upsertTodo(

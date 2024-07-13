@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface TodoItemsRepository {
-    fun getAllTodoItems(): Flow<List<TodoItem>>
     suspend fun updateChecked(id: String, isDone: Boolean)
     suspend fun getToDoById(id: String): TodoItem
     suspend fun addOrEditToDo(item: TodoItem)

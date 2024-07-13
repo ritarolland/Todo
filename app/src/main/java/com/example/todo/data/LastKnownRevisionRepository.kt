@@ -6,7 +6,7 @@ import javax.inject.Singleton
 @Singleton
 class LastKnownRevisionRepository @Inject constructor()
 {
-    var lastKnownRevision: Int? = 5
+    var lastKnownRevision: Int? = 13
         private set
 
     fun updateRevision(revision: Int) {
