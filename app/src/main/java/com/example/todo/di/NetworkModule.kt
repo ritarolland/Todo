@@ -3,7 +3,6 @@ package com.example.todo.di
 import android.content.ContentResolver
 import android.content.Context
 import com.example.todo.data.DeviceNameRepository
-import com.example.todo.di.app.AppScope
 import com.example.todo.network.ApiService
 import com.example.todo.network.CustomHostnameVerifier
 import com.example.todo.network.ServerTodoItemMapper

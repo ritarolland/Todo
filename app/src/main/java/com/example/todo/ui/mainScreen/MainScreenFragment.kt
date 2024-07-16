@@ -7,16 +7,14 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavHostController
-import com.example.todo.ui.addScreen.AddScreenViewModel
+import androidx.navigation.compose.rememberNavController
+import com.example.todo.ui.composable.NavGraph
 import com.example.todo.ui.theme.ToDoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainScreenFragment : Fragment() {
-
-    @Inject
-    lateinit var navController: NavHostController
 
 
     override fun onCreateView(
@@ -26,6 +24,8 @@ class MainScreenFragment : Fragment() {
         return ComposeView(requireActivity()).apply {
             setContent {
                 ToDoAppTheme {
+                    val navController = rememberNavController()
+                    NavGraph(navController = navController)
                     MainScreenContent(
                         navigateToAdd = { id ->
                             if (id != null) {
@@ -41,5 +41,4 @@ class MainScreenFragment : Fragment() {
             }
         }
     }
-
 }

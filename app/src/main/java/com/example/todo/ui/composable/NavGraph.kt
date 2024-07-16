@@ -13,14 +13,9 @@ import com.example.todo.ui.addScreen.AddScreenViewModel
 
 @Composable
 fun NavGraph(navController: NavHostController) {
-    val viewModel: TodoViewModel = viewModel()
-
-    val addScreenViewModel: AddScreenViewModel = viewModel()
-
     NavHost(navController = navController, startDestination = "main") {
         composable("main") {
             MainScreenContent(
-                viewModel = viewModel,
                 navigateToAdd = { id ->
                     if (id != null) {
                         navController.navigate("add/$id")
@@ -29,16 +24,15 @@ fun NavGraph(navController: NavHostController) {
                             launchSingleTop = true
                         }
                     }
-                },
-                addScreenViewModel = addScreenViewModel
+                }
             )
         }
         composable("add/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")
-            AddScreen(navController = navController, viewModel = addScreenViewModel)////////////////////
+            AddScreen(navController = navController)////////////////////
         }
         composable("add") {
-            AddScreen(navController = navController, viewModel = addScreenViewModel)//////////////////
+            AddScreen(navController = navController)//////////////////
         }
     }
 }

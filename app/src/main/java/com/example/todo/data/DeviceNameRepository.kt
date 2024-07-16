@@ -2,7 +2,6 @@ package com.example.todo.data
 
 import android.content.ContentResolver
 import android.provider.Settings
-import com.example.todo.di.app.AppScope
 import javax.inject.Inject
 import javax.inject.Singleton
 

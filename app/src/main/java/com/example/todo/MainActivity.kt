@@ -37,6 +37,10 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        /*setContent {
+            val navController = rememberNavController()
+            NavGraph(navController = navController)
+        }*/
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
