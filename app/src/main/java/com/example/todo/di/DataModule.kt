@@ -2,6 +2,8 @@ package com.example.todo.di
 
 import android.content.ContentResolver
 import android.content.Context
+import androidx.fragment.app.FragmentActivity
+import androidx.navigation.NavController
 import androidx.room.Room
 import com.example.todo.network.ApiService
 import com.example.todo.network.interceptors.AuthInterceptor
@@ -13,6 +15,7 @@ import com.example.todo.data.ListRepository
 import com.example.todo.data.TodoDatabase
 import com.example.todo.data.TodoItemsRepository
 import com.example.todo.data.TodoItemsRepositoryImpl
+import com.example.todo.di.app.AppScope
 import com.example.todo.domain.models.TodoItemDao
 import com.example.todo.utils.NetworkChecker
 import dagger.Module
@@ -40,11 +43,11 @@ object DataModule {
         ).build()
     }
 
-    @Provides
-    @Singleton
+    /*@Provides
+    @AppScope
     fun provideNetworkChecker(@ApplicationContext context: Context): NetworkChecker {
         return NetworkChecker(context)
-    }
+    }*/
     @Provides
     fun provideTodoItemDao(database: TodoDatabase): TodoItemDao {
         return database.todoItemDao()
@@ -84,7 +87,7 @@ object DataModule {
         )
     }
 
-    @Provides
+    /*@Provides
     fun provideContentResolver(@ApplicationContext context: Context): ContentResolver {
         return context.contentResolver
     }
@@ -95,28 +98,19 @@ object DataModule {
     }
 
     @Provides
+    @AppScope
     fun provideLastKnownRevisionRepository(): LastKnownRevisionRepository {
         return LastKnownRevisionRepository()
     }
 
     @Provides
-    @Singleton
+    @AppScope
     fun provideAuthInterceptor(): AuthInterceptor {
-        //val token = "Cerin"
         return AuthInterceptor()
     }
 
-
-
-    /*@Provides
-    @Singleton
-    fun provideLastRevisionInterceptor(lastKnownRevisionRepository: LastKnownRevisionRepository): LastKnownRevisionInterceptor {
-        //val token = "Cerin"
-        return LastKnownRevisionInterceptor(lastKnownRevisionRepository)
-    }*/
-
     @Provides
-    @Singleton
+    @AppScope
     fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(authInterceptor)
@@ -125,7 +119,7 @@ object DataModule {
     }
 
     @Provides
-    @Singleton
+    @AppScope
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://beta.mrdekk.ru/todo/")
@@ -136,15 +130,16 @@ object DataModule {
     }
 
     @Provides
-    @Singleton
+    @AppScope
     fun provideTodoApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
     }
 
     @Provides
-    @Singleton
+    @AppScope
     fun provideServerTodoItemMapper(deviceNameRepository: DeviceNameRepository): ServerTodoItemMapper {
         return ServerTodoItemMapper(deviceNameRepository)
-    }
+    }*/
+
 
 }

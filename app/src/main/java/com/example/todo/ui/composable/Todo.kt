@@ -1,4 +1,4 @@
-package com.example.todo.ui
+package com.example.todo.ui.composable
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.todo.domain.models.Importance
 
 import com.example.todo.domain.models.TodoItem
-import com.example.todo.theme.ToDoAppTheme
+import com.example.todo.ui.theme.ToDoAppTheme
 
 import java.text.SimpleDateFormat
 import java.util.Date

@@ -1,6 +1,7 @@
 package com.example.todo.data
 
 import android.util.Log
+import com.example.todo.di.app.AppScope
 import com.example.todo.domain.models.TodoItem
 import com.example.todo.domain.models.TodoItemDao
 import com.example.todo.network.ApiService
@@ -13,11 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -74,19 +71,6 @@ class TodoItemsRepositoryImpl @Inject constructor(
     private val serverTodoItemMapper: ServerTodoItemMapper,
     private val lastKnownRevisionRepository: LastKnownRevisionRepository,
 ) : TodoItemsRepository {
-
-    /*override suspend fun getAllTodoItems(): Flow<List<TodoItem>> = flow {
-        if (networkChecker.isNetworkAvailable()) {
-
-            val response = handle {
-                todoApiService.getAll()
-            }
-            val remoteItems = response.list.map { serverTodoItemMapper.mapTo(it) }
-            todoItemDao.insertAll(remoteItems)
-            lastKnownRevisionRepository.updateRevision(response.revision)
-        }
-        emitAll(todoItemDao.getAll())
-    }*/
 
     override suspend fun updateChecked(id: String, isDone: Boolean) {
         todoItemDao.updateChecked(id, isDone)

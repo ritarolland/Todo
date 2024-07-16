@@ -1,4 +1,4 @@
-package com.example.todo.ui
+package com.example.todo.ui.composable
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
