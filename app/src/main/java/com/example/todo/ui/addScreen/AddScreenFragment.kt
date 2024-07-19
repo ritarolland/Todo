@@ -1,3 +1,4 @@
+/*
 package com.example.todo.ui.addScreen
 
 import android.os.Bundle
@@ -23,16 +24,20 @@ class AddScreenFragment : Fragment() {
     ): View {
         return ComposeView(requireActivity()).apply {
             setContent {
-                ToDoAppTheme {
-                    val navController = rememberNavController()
-                    NavGraph(navController = navController)
+                val navController = rememberNavController()
+                NavGraph(navController = navController)
+                */
+/*ToDoAppTheme {
+
                     AddScreen(
                         navController = navController
                     )
-                }
+                }*//*
+
             }
         }
     }
 
 
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.example.todo.di.app
 
 import android.content.Context
@@ -20,4 +21,4 @@ interface AppComponent {
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent
     }
-}
+}*/

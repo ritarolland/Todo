@@ -50,7 +50,8 @@ fun Todo(
             checkedBorderColor = MaterialTheme.colorScheme.scrim,
             checkedBoxColor = MaterialTheme.colorScheme.scrim,
             uncheckedBoxColor = MaterialTheme.colorScheme.error.copy(alpha = 0.16f),
-            uncheckedBorderColor = MaterialTheme.colorScheme.error
+            uncheckedBorderColor = MaterialTheme.colorScheme.error,
+            checkedCheckmarkColor = MaterialTheme.colorScheme.primaryContainer
         )
     } else {
         CheckboxDefaults.colors().copy(
@@ -88,7 +89,11 @@ fun Todo(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                Text(
+                TodoItemText(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 14.dp, start = 4.dp, end = 8.dp),
+                    item = item)
+                /*Text(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 14.dp, start = 4.dp, end = 8.dp),
@@ -96,9 +101,9 @@ fun Todo(
                     fontSize = 16.sp,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     style = if (item.isDone) TextStyle(textDecoration = TextDecoration.LineThrough) else TextStyle()
-                )
+                )*/
 
                 if (item.deadline != null) {
                     Text(
@@ -107,10 +112,10 @@ fun Todo(
                             Locale.getDefault()
                         ).format(item.deadline),
                         Modifier.padding(bottom = 14.dp, top = 8.dp, start = 4.dp),
-                        color = Color.Black
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
-
             }
             Icon(
                 Icons.Outlined.Info,
@@ -121,6 +126,26 @@ fun Todo(
 
         }
     }
+}
+
+@Composable
+fun TodoItemText(item: TodoItem, modifier: Modifier) {
+    val baseStyle = MaterialTheme.typography.labelMedium
+
+    val textStyle = if (item.isDone) {
+        baseStyle.copy(textDecoration = TextDecoration.LineThrough)
+    } else {
+        baseStyle
+    }
+
+    Text(
+        modifier = modifier,
+        text = item.text,
+        style = textStyle,
+        color = MaterialTheme.colorScheme.onPrimary,
+        maxLines = 3,
+        overflow = TextOverflow.Ellipsis,
+    )
 }
 
 @Preview

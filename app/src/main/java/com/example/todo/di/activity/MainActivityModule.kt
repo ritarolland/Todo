@@ -1,3 +1,4 @@
+/*
 package com.example.todo.di.activity
 
 import android.content.Context
@@ -16,4 +17,4 @@ object MainActivityModule {
     fun provideMainActivity(@ActivityContext context: Context): MainActivity {
         return context as MainActivity
     }
-}
+}*/

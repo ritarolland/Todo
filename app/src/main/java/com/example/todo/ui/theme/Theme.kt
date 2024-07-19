@@ -22,10 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
@@ -42,9 +42,10 @@ private val DarkColorScheme = darkColorScheme(
     background = ThemeColors.Night.backSecondary,
     surfaceTint = ThemeColors.Night.backElevated,
     onPrimary = ThemeColors.Night.labelPrimary,
-    onSecondary = ThemeColors.Night.labelSecondary ,
+    onSecondary = ThemeColors.Night.labelSecondary,
     onTertiary = ThemeColors.Night.labelTertiary,
     onSurfaceVariant = ThemeColors.Night.labelDisable,
+    primaryContainer = ThemeColors.Night.white
 )
 private val LightColorScheme = lightColorScheme(
     primary = ThemeColors.Day.supportSeparator,
@@ -58,37 +59,42 @@ private val LightColorScheme = lightColorScheme(
     background = ThemeColors.Day.backSecondary,
     surfaceTint = ThemeColors.Day.backElevated,
     onPrimary = ThemeColors.Day.labelPrimary,
-    onSecondary = ThemeColors.Day.labelSecondary ,
+    onSecondary = ThemeColors.Day.labelSecondary,
     onTertiary = ThemeColors.Day.labelTertiary,
-    onSurfaceVariant = ThemeColors.Day.labelDisable)
+    onSurfaceVariant = ThemeColors.Day.labelDisable,
+    primaryContainer = ThemeColors.Day.white
+)
 
 @Composable
 fun ToDoAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),    
+    darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
-    content: @Composable () -> Unit) {
-    val colorScheme = when {        
+    content: @Composable () -> Unit
+) {
+    val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-        val context = LocalContext.current            
+            val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context)
             else dynamicLightColorScheme(context)
-    }
+        }
+
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-        val window = (view.context as Activity).window
-        window.statusBarColor = colorScheme.primary.toArgb()
-        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            val window = (view.context as Activity).window
+            window.statusBarColor = colorScheme.primary.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
     MaterialTheme(
         colorScheme = colorScheme,
         typography = CustomTypography,
         content = content
-    )}
+    )
+}
 
 @Composable
 fun ColorBox(color: Color, label: String) {

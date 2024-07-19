@@ -23,9 +23,10 @@ class MainScreenFragment : Fragment() {
     ): View {
         return ComposeView(requireActivity()).apply {
             setContent {
-                ToDoAppTheme {
-                    val navController = rememberNavController()
-                    NavGraph(navController = navController)
+                val navController = rememberNavController()
+                NavGraph(navController = navController)
+                /*ToDoAppTheme {
+
                     MainScreenContent(
                         navigateToAdd = { id ->
                             if (id != null) {
@@ -37,7 +38,7 @@ class MainScreenFragment : Fragment() {
                             }
                         },
                     )
-                }
+                }*/
             }
         }
     }

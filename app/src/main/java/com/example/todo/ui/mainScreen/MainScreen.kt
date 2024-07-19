@@ -166,13 +166,16 @@ fun TodoTopAppBar(
 }
 
 
-@Composable
+/*@Composable
 @Preview(showBackground = true)
 fun PreviewMainScreen() {
+
+    val mockViewModel = AddScreenViewModel()
+    MainScreenContent(navigateToAdd = {})
     ToDoAppTheme(darkTheme = false, dynamicColor = false) {
-        MainScreenContent(navigateToAdd = {})
+
     }
-}
+}*/
 
 //@Preview
 //@Composable

@@ -57,8 +57,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.todo.R
+import com.example.todo.data.ListRepository
+import com.example.todo.data.TodoItemsRepository
+import com.example.todo.data.TodoItemsRepositoryImpl
 import com.example.todo.domain.models.Importance
+import com.example.todo.domain.models.TodoItem
+import com.example.todo.domain.models.TodoItemDao
+import com.example.todo.domain.models.TodoItemDao_Impl
+import com.example.todo.ui.mainScreen.TodoViewModel
+import com.example.todo.ui.theme.ToDoAppTheme
 import com.example.todo.utils.DateFormatter
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -327,12 +337,50 @@ fun getStringFromImportance(importance: Importance, importanceItems: Array<Strin
     }
 }
 
+class MockTodoItemsRepository : TodoItemsRepository {
+    private val mockTodoItem = TodoItem(
+        id = "1",
+        text = "Sample task",
+        importance = Importance.NORMAL,
+        deadline = null,
+        isDone = false,
+        createdAt = Date(),
+        updatedAt = Date()
+    )
+
+    override suspend fun updateChecked(id: String, isDone: Boolean) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getToDoById(id: String): TodoItem {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun addOrEditToDo(item: TodoItem) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteToDo(id: String) {
+        TODO("Not yet implemented")
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewAddScreen() {
+    val mockTodoItem = TodoItem(
+        id = "1",
+        text = "Sample task",
+        importance = Importance.NORMAL,
+        deadline = null,
+        isDone = false,
+        createdAt = Date(),
+        updatedAt = Date()
+    )
+    val mockRepository = MockTodoItemsRepository()
+    val mockViewModel = AddScreenViewModel(mockRepository)
     val navController = rememberNavController()
-    MaterialTheme {
-        AddScreen(navController = navController)
+    ToDoAppTheme {
+        AddScreen(viewModel = mockViewModel, navController = navController)
     }
 }

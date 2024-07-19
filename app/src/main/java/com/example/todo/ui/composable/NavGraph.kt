@@ -9,23 +9,27 @@ import com.example.todo.ui.mainScreen.TodoViewModel
 import com.example.todo.ui.addScreen.AddScreen
 import com.example.todo.ui.mainScreen.MainScreenContent
 import com.example.todo.ui.addScreen.AddScreenViewModel
+import com.example.todo.ui.theme.ToDoAppTheme
 
 
 @Composable
 fun NavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "main") {
         composable("main") {
-            MainScreenContent(
-                navigateToAdd = { id ->
-                    if (id != null) {
-                        navController.navigate("add/$id")
-                    } else {
-                        navController.navigate("add") {
-                            launchSingleTop = true
+            ToDoAppTheme {
+                MainScreenContent(
+                    navigateToAdd = { id ->
+                        if (id != null) {
+                            navController.navigate("add/$id")
+                        } else {
+                            navController.navigate("add") {
+                                launchSingleTop = true
+                            }
                         }
                     }
-                }
-            )
+                )
+            }
+
         }
         composable("add/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")
