@@ -1,15 +1,15 @@
 package com.example.todo
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.rememberNavController
-import com.example.todo.ui.NavGraph
-import com.example.todo.theme.ToDoAppTheme
+import com.example.todo.ui.composable.NavGraph
+import com.example.todo.ui.theme.ToDoAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

@@ -4,6 +4,7 @@ import com.example.todo.data.LastKnownRevisionRepository
 import okhttp3.Interceptor
 import okhttp3.Response
 
+/*
 class LastKnownRevisionInterceptor(
     private val lastKnownRevisionRepository: LastKnownRevisionRepository
 ) : Interceptor {
@@ -16,4 +17,4 @@ class LastKnownRevisionInterceptor(
         )
         return chain.proceed(requestBuilder.build())
     }
-}
+}*/

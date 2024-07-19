@@ -1,11 +1,11 @@
-package com.example.todo.compose
+package com.example.todo.ui.composable
 
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import com.example.todo.Importance
+import com.example.todo.domain.models.Importance
 import com.example.todo.R
 
 @Composable

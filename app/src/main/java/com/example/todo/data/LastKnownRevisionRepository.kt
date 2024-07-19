@@ -4,9 +4,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LastKnownRevisionRepository @Inject constructor()
-{
-    var lastKnownRevision: Int? = 5
+class LastKnownRevisionRepository @Inject constructor() {
+    var lastKnownRevision: Int? = 0
         private set
 
     fun updateRevision(revision: Int) {

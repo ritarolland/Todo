@@ -1,4 +1,4 @@
-package com.example.todo.ui
+package com.example.todo.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -8,16 +8,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.todo.R
 
-val CustomFontFamily = FontFamily(
-    Font(R.font.roboto, FontWeight.Normal)
-)
-val CustomFontFamily2 = FontFamily(
-    Font(R.font.roboto_bold, FontWeight.Bold)
-)
-
 val CustomTypography = Typography(
     labelSmall = TextStyle(
-        fontFamily = CustomFontFamily,
+        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
@@ -25,7 +18,7 @@ val CustomTypography = Typography(
     ),
 
     labelMedium = TextStyle(
-        fontFamily = CustomFontFamily,
+        fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
@@ -33,8 +26,8 @@ val CustomTypography = Typography(
     ),
 
     labelLarge = TextStyle(
-        fontFamily = CustomFontFamily2,
-        fontWeight = FontWeight.Normal,
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp

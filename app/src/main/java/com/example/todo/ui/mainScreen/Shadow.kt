@@ -1,4 +1,4 @@
-package com.example.todo.compose
+package com.example.todo.ui.mainScreen
 
 import android.graphics.BlurMaskFilter
 import androidx.compose.ui.Modifier

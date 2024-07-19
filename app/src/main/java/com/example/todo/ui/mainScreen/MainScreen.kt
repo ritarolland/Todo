@@ -37,8 +37,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.todo.R
-import com.example.todo.theme.ToDoAppTheme
-import com.example.todo.ui.Todo
+import com.example.todo.ui.theme.ToDoAppTheme
+import com.example.todo.ui.composable.Todo
 import com.example.todo.ui.addScreen.AddScreenViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -166,13 +166,16 @@ fun TodoTopAppBar(
 }
 
 
-@Composable
+/*@Composable
 @Preview(showBackground = true)
 fun PreviewMainScreen() {
+
+    val mockViewModel = AddScreenViewModel()
+    MainScreenContent(navigateToAdd = {})
     ToDoAppTheme(darkTheme = false, dynamicColor = false) {
-        MainScreenContent(navigateToAdd = {})
+
     }
-}
+}*/
 
 //@Preview
 //@Composable

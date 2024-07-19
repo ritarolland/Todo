@@ -1,4 +1,4 @@
-package com.example.todo.compose
+package com.example.todo.ui.composable
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -27,9 +27,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.todo.Importance
-import com.example.todo.TodoItem
-import com.example.todo.ui.ToDoAppTheme
+import com.example.todo.domain.models.Importance
+
+import com.example.todo.domain.models.TodoItem
+import com.example.todo.ui.theme.ToDoAppTheme
+
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -38,7 +40,7 @@ import java.util.Locale
 @Composable
 fun Todo(
     item: TodoItem,
-    onComplete: (newState: Boolean) -> Unit,
+    onComplete: (String, Boolean) -> Unit,
     onCardClick: () -> Unit,
 ) {
 
@@ -48,7 +50,8 @@ fun Todo(
             checkedBorderColor = MaterialTheme.colorScheme.scrim,
             checkedBoxColor = MaterialTheme.colorScheme.scrim,
             uncheckedBoxColor = MaterialTheme.colorScheme.error.copy(alpha = 0.16f),
-            uncheckedBorderColor = MaterialTheme.colorScheme.error
+            uncheckedBorderColor = MaterialTheme.colorScheme.error,
+            checkedCheckmarkColor = MaterialTheme.colorScheme.primaryContainer
         )
     } else {
         CheckboxDefaults.colors().copy(
@@ -74,7 +77,7 @@ fun Todo(
             Checkbox(
                 checked = item.isDone,
                 onCheckedChange = {
-                    onComplete(it)
+                    onComplete(item.id, it)
                 },
                 colors = checkBoxColor
             )
@@ -86,19 +89,21 @@ fun Todo(
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                item.text?.let {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 14.dp, start = 4.dp, end = 8.dp),
-                        text = it,
-                        fontSize = 16.sp,
-                        maxLines = 3,
-                        overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        style = if (item.isDone) TextStyle(textDecoration = TextDecoration.LineThrough) else TextStyle()
-                    )
-                }
+                TodoItemText(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 14.dp, start = 4.dp, end = 8.dp),
+                    item = item)
+                /*Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 14.dp, start = 4.dp, end = 8.dp),
+                    text = item.text,
+                    fontSize = 16.sp,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = if (item.isDone) TextStyle(textDecoration = TextDecoration.LineThrough) else TextStyle()
+                )*/
 
                 if (item.deadline != null) {
                     Text(
@@ -107,10 +112,10 @@ fun Todo(
                             Locale.getDefault()
                         ).format(item.deadline),
                         Modifier.padding(bottom = 14.dp, top = 8.dp, start = 4.dp),
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        style = MaterialTheme.typography.labelMedium
                     )
                 }
-
             }
             Icon(
                 Icons.Outlined.Info,
@@ -121,6 +126,26 @@ fun Todo(
 
         }
     }
+}
+
+@Composable
+fun TodoItemText(item: TodoItem, modifier: Modifier) {
+    val baseStyle = MaterialTheme.typography.labelMedium
+
+    val textStyle = if (item.isDone) {
+        baseStyle.copy(textDecoration = TextDecoration.LineThrough)
+    } else {
+        baseStyle
+    }
+
+    Text(
+        modifier = modifier,
+        text = item.text,
+        style = textStyle,
+        color = MaterialTheme.colorScheme.onPrimary,
+        maxLines = 3,
+        overflow = TextOverflow.Ellipsis,
+    )
 }
 
 @Preview
@@ -137,7 +162,7 @@ fun ToDoItemBasic() {
                 createdAt = Date(),
                 updatedAt = null
             ),
-            {},
+            {_, _ -> },
             {},
         )
     }
@@ -157,7 +182,7 @@ fun ToDoItemHighPriority() {
                 createdAt = Date(),
                 updatedAt = null
             ),
-            {},
+            {_, _ ->},
             {},
         )
     }
@@ -177,7 +202,7 @@ fun ToDoItemWithDeadline() {
                 createdAt = Date(),
                 updatedAt = null
             ),
-            {},
+            {_, _ ->},
             {},
         )
     }
@@ -198,7 +223,7 @@ fun ToDoItemLowPriority() {
                 createdAt = Date(),
                 updatedAt = Date(1734774190000)
             ),
-            {},
+            {_, _ ->},
             {},
         )
     }
@@ -218,7 +243,7 @@ fun ToDoItemLotText() {
                 createdAt = Date(),
                 updatedAt = Date(1734774190000)
             ),
-            {},
+            {_, _ ->},
             {},
         )
     }

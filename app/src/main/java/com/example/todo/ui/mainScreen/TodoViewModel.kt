@@ -2,6 +2,7 @@ package com.example.todo.ui.mainScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.todo.data.ListRepository
 import com.example.todo.data.TodoItemsRepository
 import com.example.todo.data.TodoItemsRepositoryImpl
 import com.example.todo.domain.models.TodoItem
@@ -11,13 +12,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TodoViewModel @Inject constructor(
-    private val repository: TodoItemsRepositoryImpl
+    private val repository: TodoItemsRepositoryImpl,
+    private val listRepository: ListRepository
 ) : ViewModel() {
 
     private val todoItems = MutableStateFlow<List<TodoItem>>(emptyList())
@@ -45,7 +48,7 @@ class TodoViewModel @Inject constructor(
 
     private fun loadTodos() {
         runSafeInBackground {
-            repository.listOfToDo.collect { todoList ->
+            listRepository.listOfToDo.collectLatest { todoList ->
                 todoItems.value = todoList
                 _mainScreenUiModel.value = MainScreenUiModel(
                     tasks = if (_mainScreenUiModel.value.showCompletedTasks) {
