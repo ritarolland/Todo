@@ -1,7 +1,6 @@
 package com.example.todo.data
 
 import android.util.Log
-import com.example.todo.di.app.AppScope
 import com.example.todo.domain.models.TodoItem
 import com.example.todo.domain.models.TodoItemDao
 import com.example.todo.network.ApiService

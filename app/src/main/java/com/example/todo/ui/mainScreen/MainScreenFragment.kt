@@ -1,3 +1,4 @@
+/*
 package com.example.todo.ui.mainScreen
 
 import android.os.Bundle
@@ -25,7 +26,8 @@ class MainScreenFragment : Fragment() {
             setContent {
                 val navController = rememberNavController()
                 NavGraph(navController = navController)
-                /*ToDoAppTheme {
+                */
+/*ToDoAppTheme {
 
                     MainScreenContent(
                         navigateToAdd = { id ->
@@ -38,8 +40,9 @@ class MainScreenFragment : Fragment() {
                             }
                         },
                     )
-                }*/
+                }*//*
+
             }
         }
     }
-}
+}*/

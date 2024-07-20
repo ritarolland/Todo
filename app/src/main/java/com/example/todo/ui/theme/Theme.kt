@@ -20,6 +20,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +30,11 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import com.example.todo.ui.settingsScreen.ThemeOption
+
+val LocalThemeOption = staticCompositionLocalOf<ThemeOption> {
+    error("No theme option provided")
+}
 
 private val DarkColorScheme = darkColorScheme(
     primary = ThemeColors.Night.supportSeparator,
@@ -67,31 +73,38 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun ToDoAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
+    val themeOption = LocalThemeOption.current
+    val darkTheme = when (themeOption) {
+        ThemeOption.Light -> false
+        ThemeOption.Dark -> true
+        ThemeOption.System -> isSystemInDarkTheme()
+    }
+
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context)
-            else dynamicLightColorScheme(context)
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
+
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = CustomTypography,
+        typography = Typography,
         content = content
     )
 }
@@ -136,7 +149,7 @@ fun ThemePreviewContent() {
 @Preview(showBackground = true)
 @Composable
 fun LightThemePreview() {
-    ToDoAppTheme(darkTheme = false) {
+    ToDoAppTheme() {
         Surface(modifier = Modifier.fillMaxSize()) {
             ThemePreviewContent()
         }
@@ -146,7 +159,7 @@ fun LightThemePreview() {
 @Preview(showBackground = true)
 @Composable
 fun DarkThemePreview() {
-    ToDoAppTheme(darkTheme = true) {
+    ToDoAppTheme() {
         Surface(modifier = Modifier.fillMaxSize()) {
             ThemePreviewContent()
         }

@@ -7,6 +7,7 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,10 +43,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -65,10 +69,13 @@ import com.example.todo.domain.models.TodoItem
 import com.example.todo.domain.models.TodoItemDao
 import com.example.todo.domain.models.TodoItemDao_Impl
 import com.example.todo.ui.mainScreen.TodoViewModel
+import com.example.todo.ui.settingsScreen.ThemeOption
 import com.example.todo.ui.theme.ToDoAppTheme
 import com.example.todo.utils.DateFormatter
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -101,33 +108,29 @@ fun AddScreen(
                     }
                 },
                 actions = {
-                    TextButton(
+                    CustomTextButton(
                         onClick = {
                             viewModel.saveItem()
                             navController.popBackStack()
                         },
+                        text = stringResource(id = R.string.save),
                         modifier = Modifier.padding(end = 16.dp)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.save),
-                            color = MaterialTheme.colorScheme.tertiary,
-                            fontSize = 16.sp
-                        )
-                    }
+                    )
                 }
             )
         }
     ) {
         Column(
             modifier = Modifier
+                .padding(top = 72.dp)
                 .background(MaterialTheme.colorScheme.surface)
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .padding(top = 72.dp)
+                    .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
                     .background(Color.Gray.copy(alpha = 0.1f)),
                 contentAlignment = Alignment.TopStart
@@ -281,6 +284,45 @@ fun AddScreen(
 
 }
 
+@Composable
+fun CustomTextButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    text: String
+) {
+    var isPressed by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+
+    Box(
+        modifier = modifier
+            .background(
+                color = if (isPressed) Color.Gray else MaterialTheme.colorScheme.tertiary,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .clickable(
+                onClick = {
+                    isPressed = true
+                    onClick()
+                    // Reset the pressed state after a short delay to create a visual effect
+                    coroutineScope.launch {
+                        delay(100)
+                        isPressed = false
+                    }
+                },
+                indication = null, // No default ripple effect
+                interactionSource = remember { MutableInteractionSource() }
+            )
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        Text(
+            text = text,
+            color = if (isPressed) Color.White else MaterialTheme.colorScheme.onSurface,
+            fontSize = 16.sp,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+}
+
 private fun onShowDialog(
     context: Context,
     onDismissRequest: () -> Unit,
@@ -364,6 +406,7 @@ class MockTodoItemsRepository : TodoItemsRepository {
         TODO("Not yet implemented")
     }
 }
+/*
 
 @Preview(showBackground = true)
 @Composable
@@ -380,7 +423,7 @@ fun PreviewAddScreen() {
     val mockRepository = MockTodoItemsRepository()
     val mockViewModel = AddScreenViewModel(mockRepository)
     val navController = rememberNavController()
-    ToDoAppTheme {
+    ToDoAppTheme(themeOption = ThemeOption.Light) {
         AddScreen(viewModel = mockViewModel, navController = navController)
     }
-}
+}*/
