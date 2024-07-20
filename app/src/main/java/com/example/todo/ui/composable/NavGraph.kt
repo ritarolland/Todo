@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.todo.ui.aboutScreen.AboutScreen
 import com.example.todo.ui.mainScreen.TodoViewModel
 import com.example.todo.ui.addScreen.AddScreen
 import com.example.todo.ui.mainScreen.MainScreenContent
@@ -17,7 +18,8 @@ fun NavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "main") {
         composable("main") {
             ToDoAppTheme {
-                MainScreenContent(
+                AboutScreen(navController = navController)
+                /*MainScreenContent(
                     navigateToAdd = { id ->
                         if (id != null) {
                             navController.navigate("add/$id")
@@ -27,16 +29,16 @@ fun NavGraph(navController: NavHostController) {
                             }
                         }
                     }
-                )
+                )*/
             }
 
         }
-        composable("add/{id}") { backStackEntry ->
+       /* composable("add/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")
             AddScreen(navController = navController)////////////////////
         }
         composable("add") {
             AddScreen(navController = navController)//////////////////
-        }
+        }*/
     }
 }

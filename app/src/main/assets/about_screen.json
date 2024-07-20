@@ -1,0 +1,71 @@
+{
+  "log_id": "todoapp",
+  "states": [
+    {
+      "state_id": 0,
+      "div": {
+        "type": "container",
+        "items": [
+          {
+            "type": "image",
+            "image_url": "https://github.com/Megatroxx/DivImages/blob/main/angle-square-left_6407308.svg?raw=true",
+            "width": {
+              "type": "fixed",
+              "value": 200
+            },
+            "height": {
+              "type": "fixed",
+              "value": 200
+            },
+            "margins": {
+              "top": 20,
+              "start": 20,
+              "end": 20
+            }
+          },
+          {
+            "type": "button",
+            "text": "Назад",
+            "background_color": "#FF0000",
+            "text_color": "#000000",
+            "action": {
+              "log_id": "navigate_back",
+              "url": "navigation-action://navigate"
+            },
+            "margins": {
+              "top": 20,
+              "start": 20,
+              "end": 20
+            }
+          },
+          {
+            "type": "button",
+            "text": "Написать нам",
+            "background_color": "#0000FF",
+            "text_color": "#FFFFFF",
+            "action": {
+              "log_id": "send_email",
+              "url": "mailto:zakharchenkoveronika@gmail.com"
+            },
+            "margins": {
+              "top": 20,
+              "start": 20,
+              "end": 20
+            }
+          },
+          {
+            "type": "text",
+            "text": "Это приложение ToDoApp. Здесь вы можете составлять список дел, отмечать выполненные задачи и делиться списками с друзьями.",
+            "font_size": 18,
+            "text_color": "#000000",
+            "margins": {
+              "top": 20,
+              "start": 20,
+              "end": 20
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
