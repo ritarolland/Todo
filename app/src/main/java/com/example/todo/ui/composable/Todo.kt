@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.todo.domain.models.Importance
 
 import com.example.todo.domain.models.TodoItem
+import com.example.todo.ui.settingsScreen.ThemeOption
 import com.example.todo.ui.theme.ToDoAppTheme
 
 import java.text.SimpleDateFormat
@@ -147,11 +148,11 @@ fun TodoItemText(item: TodoItem, modifier: Modifier) {
         overflow = TextOverflow.Ellipsis,
     )
 }
-
+/*
 @Preview
 @Composable
 fun ToDoItemBasic() {
-    ToDoAppTheme(darkTheme = false, dynamicColor = false) {
+    ToDoAppTheme(darkTheme = false, dynamicColor = false, themeOption = ThemeOption.Light) {
         Todo(
             TodoItem(
                 id = "1",
@@ -171,7 +172,7 @@ fun ToDoItemBasic() {
 @Preview
 @Composable
 fun ToDoItemHighPriority() {
-    ToDoAppTheme(darkTheme = false, dynamicColor = false) {
+    ToDoAppTheme(darkTheme = false, dynamicColor = false, themeOption = ThemeOption.Light) {
         Todo(
             TodoItem(
                 id = "2",
@@ -191,7 +192,7 @@ fun ToDoItemHighPriority() {
 @Preview
 @Composable
 fun ToDoItemWithDeadline() {
-    ToDoAppTheme(darkTheme = false, dynamicColor = false) {
+    ToDoAppTheme(darkTheme = false, dynamicColor = false, themeOption = ThemeOption.Light) {
         Todo(
             TodoItem(
                 id = "1",
@@ -212,7 +213,7 @@ fun ToDoItemWithDeadline() {
 @Preview
 @Composable
 fun ToDoItemLowPriority() {
-    ToDoAppTheme(darkTheme = true, dynamicColor = false) {
+    ToDoAppTheme(darkTheme = true, dynamicColor = false, themeOption = ThemeOption.Dark) {
         Todo(
             TodoItem(
                 id = "3",
@@ -232,7 +233,7 @@ fun ToDoItemLowPriority() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun ToDoItemLotText() {
-    ToDoAppTheme(darkTheme = false, dynamicColor = false) {
+    ToDoAppTheme(darkTheme = false, dynamicColor = false, themeOption = ThemeOption.Light) {
         Todo(
             TodoItem(
                 id = "4",
@@ -247,4 +248,4 @@ fun ToDoItemLotText() {
             {},
         )
     }
-}
+}*/

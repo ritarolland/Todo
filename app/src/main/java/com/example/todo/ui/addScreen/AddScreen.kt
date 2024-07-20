@@ -65,6 +65,7 @@ import com.example.todo.domain.models.TodoItem
 import com.example.todo.domain.models.TodoItemDao
 import com.example.todo.domain.models.TodoItemDao_Impl
 import com.example.todo.ui.mainScreen.TodoViewModel
+import com.example.todo.ui.settingsScreen.ThemeOption
 import com.example.todo.ui.theme.ToDoAppTheme
 import com.example.todo.utils.DateFormatter
 import kotlinx.coroutines.flow.Flow
@@ -364,6 +365,7 @@ class MockTodoItemsRepository : TodoItemsRepository {
         TODO("Not yet implemented")
     }
 }
+/*
 
 @Preview(showBackground = true)
 @Composable
@@ -380,7 +382,7 @@ fun PreviewAddScreen() {
     val mockRepository = MockTodoItemsRepository()
     val mockViewModel = AddScreenViewModel(mockRepository)
     val navController = rememberNavController()
-    ToDoAppTheme {
+    ToDoAppTheme(themeOption = ThemeOption.Light) {
         AddScreen(viewModel = mockViewModel, navController = navController)
     }
-}
+}*/

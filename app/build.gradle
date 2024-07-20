@@ -54,6 +54,7 @@ dependencies {
     //room
     implementation "androidx.room:room-runtime:2.6.1"
     implementation "androidx.room:room-ktx:2.6.1"
+    //implementation libs.androidx.datastore.core.android
     kapt "androidx.room:room-compiler:2.6.1"
 
     //okHttp retrofit
@@ -111,6 +112,9 @@ dependencies {
     implementation libs.div.glide
 
     implementation libs.commons.io
+
+    // DataStore Preferences
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 }
 
 kapt {

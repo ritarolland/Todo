@@ -10,14 +10,16 @@ import com.example.todo.ui.mainScreen.TodoViewModel
 import com.example.todo.ui.addScreen.AddScreen
 import com.example.todo.ui.mainScreen.MainScreenContent
 import com.example.todo.ui.addScreen.AddScreenViewModel
+import com.example.todo.ui.settingsScreen.SettingsScreen
+import com.example.todo.ui.settingsScreen.SettingsViewModel
+import com.example.todo.ui.settingsScreen.ThemeOption
 import com.example.todo.ui.theme.ToDoAppTheme
 
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(navController: NavHostController, settingsViewModel: SettingsViewModel) {
     NavHost(navController = navController, startDestination = "main") {
         composable("main") {
-            ToDoAppTheme {
                 MainScreenContent(
                     navigateToAdd = { id ->
                         if (id != null) {
@@ -30,20 +32,25 @@ fun NavGraph(navController: NavHostController) {
                     },
                     navigateAbout = {
                         navController.navigate("about")
+                    },
+                    navigateSettings = {
+                        navController.navigate("settings")
                     }
                 )
-            }
 
         }
         composable("about") {
             AboutScreen(navController = navController)
+        }
+        composable("settings") {
+            SettingsScreen(navController = navController, settingsViewModel = settingsViewModel)
         }
         composable("add/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")
             AddScreen(navController = navController)////////////////////
         }
         composable("add") {
-            AddScreen(navController = navController)//////////////////
+            AddScreen(navController = navController)
         }
     }
 }

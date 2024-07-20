@@ -49,7 +49,8 @@ fun MainScreenContent(
     viewModel: TodoViewModel = hiltViewModel(),
     addScreenViewModel: AddScreenViewModel = hiltViewModel(),
     navigateToAdd: (String?) -> Unit,
-    navigateAbout: () -> Unit
+    navigateAbout: () -> Unit,
+    navigateSettings: () -> Unit
 ) {
     val mainScreenUiModel by viewModel.mainScreenUiModel.collectAsState()
     val errorMessage by viewModel.errorFlow.collectAsState()
@@ -63,7 +64,8 @@ fun MainScreenContent(
                 viewModel = viewModel,
                 mainScreenUiModel = mainScreenUiModel,
                 scrollBehavior = scrollBehavior,
-                navigateAbout = navigateAbout
+                navigateAbout = navigateAbout,
+                navigateSettings = navigateSettings
             )
         },
         floatingActionButton = {
@@ -135,7 +137,8 @@ fun TodoTopAppBar(
     viewModel: TodoViewModel,
     mainScreenUiModel: MainScreenUiModel,
     scrollBehavior: TopAppBarScrollBehavior,
-    navigateAbout: () -> Unit
+    navigateAbout: () -> Unit,
+    navigateSettings: () -> Unit
 ) {
     LargeTopAppBar(
         modifier = Modifier
@@ -172,6 +175,15 @@ fun TodoTopAppBar(
                 Icon(
                     Icons.Outlined.Info,
                     contentDescription = "About app",
+                    tint = MaterialTheme.colorScheme.tertiary
+                )
+            }
+            IconButton(onClick = {
+                navigateSettings()
+            }) {
+                Icon(
+                    Icons.Outlined.Info,
+                    contentDescription = "Settings",
                     tint = MaterialTheme.colorScheme.tertiary
                 )
             }

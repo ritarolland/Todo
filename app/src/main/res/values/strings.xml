@@ -13,6 +13,7 @@
     <string name="importance">Важность</string>
     <string name="until">Сделать до</string>
     <string name="delete">Удалить</string>
+    <string name="settings_snackbar">Выбранные настройки будут применены при перезапуске приложения</string>
     <string-array name="importance_options">
         <item>Нет</item>
         <item>Высокая</item>
