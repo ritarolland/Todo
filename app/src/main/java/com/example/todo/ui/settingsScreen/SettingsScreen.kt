@@ -40,15 +40,6 @@ fun SettingsScreen(
     val selectedTheme by settingsViewModel.selectedTheme.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val snackMessage = stringResource(id = R.string.settings_snackbar)
-
-    LaunchedEffect(Unit) {
-        snackbarHostState.showSnackbar(
-            message = snackMessage,
-            actionLabel = "ОК",
-            duration = SnackbarDuration.Indefinite
-        )
-    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }

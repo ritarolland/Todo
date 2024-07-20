@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -182,7 +183,7 @@ fun TodoTopAppBar(
                 navigateSettings()
             }) {
                 Icon(
-                    Icons.Outlined.Info,
+                    Icons.Outlined.Settings,
                     contentDescription = "Settings",
                     tint = MaterialTheme.colorScheme.tertiary
                 )
