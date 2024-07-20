@@ -18,8 +18,7 @@ fun NavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "main") {
         composable("main") {
             ToDoAppTheme {
-                AboutScreen(navController = navController)
-                /*MainScreenContent(
+                MainScreenContent(
                     navigateToAdd = { id ->
                         if (id != null) {
                             navController.navigate("add/$id")
@@ -28,17 +27,23 @@ fun NavGraph(navController: NavHostController) {
                                 launchSingleTop = true
                             }
                         }
+                    },
+                    navigateAbout = {
+                        navController.navigate("about")
                     }
-                )*/
+                )
             }
 
         }
-       /* composable("add/{id}") { backStackEntry ->
+        composable("about") {
+            AboutScreen(navController = navController)
+        }
+        composable("add/{id}") { backStackEntry ->
             val id = backStackEntry.arguments?.getString("id")
             AddScreen(navController = navController)////////////////////
         }
         composable("add") {
             AddScreen(navController = navController)//////////////////
-        }*/
+        }
     }
 }

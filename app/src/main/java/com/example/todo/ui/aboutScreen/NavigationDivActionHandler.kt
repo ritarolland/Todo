@@ -1,6 +1,7 @@
 package com.example.todo.ui.aboutScreen
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -18,14 +19,14 @@ class NavigationDivActionHandler(private val navController: NavHostController) :
         val url = action.url?.evaluate(resolver) ?: return super.handleAction(action, view, resolver)
 
 
-        return if (url.scheme == SCHEME_NAVIGATION && handleSampleAction(url, view.view.context)) {
-            true
-        } else {
-            super.handleAction(action, view, resolver)
+        return when (url.scheme) {
+            SCHEME_NAVIGATION -> handleNavigationAction(url, view.view.context)
+            SCHEME_MAILTO -> handleEmailAction(url, view.view.context)
+            else -> super.handleAction(action, view, resolver)
         }
     }
 
-    private fun handleSampleAction(action: Uri, context: Context): Boolean {
+    private fun handleNavigationAction(action: Uri, context: Context): Boolean {
         return when (action.host) {
             "navigate" -> {
                 navController.popBackStack()
@@ -35,7 +36,20 @@ class NavigationDivActionHandler(private val navController: NavHostController) :
         }
     }
 
+    private fun handleEmailAction(action: Uri, context: Context): Boolean {
+        return if (action.scheme == SCHEME_MAILTO) {
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = action
+            }
+            context.startActivity(intent)
+            true
+        } else {
+            false
+        }
+    }
+
     companion object {
         const val SCHEME_NAVIGATION = "navigation-action"
+        const val SCHEME_MAILTO = "mailto"
     }
 }

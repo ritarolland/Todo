@@ -12,6 +12,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -46,7 +48,8 @@ import com.example.todo.ui.addScreen.AddScreenViewModel
 fun MainScreenContent(
     viewModel: TodoViewModel = hiltViewModel(),
     addScreenViewModel: AddScreenViewModel = hiltViewModel(),
-    navigateToAdd: (String?) -> Unit
+    navigateToAdd: (String?) -> Unit,
+    navigateAbout: () -> Unit
 ) {
     val mainScreenUiModel by viewModel.mainScreenUiModel.collectAsState()
     val errorMessage by viewModel.errorFlow.collectAsState()
@@ -59,7 +62,8 @@ fun MainScreenContent(
             TodoTopAppBar(
                 viewModel = viewModel,
                 mainScreenUiModel = mainScreenUiModel,
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                navigateAbout = navigateAbout
             )
         },
         floatingActionButton = {
@@ -130,7 +134,8 @@ fun MainScreenContent(
 fun TodoTopAppBar(
     viewModel: TodoViewModel,
     mainScreenUiModel: MainScreenUiModel,
-    scrollBehavior: TopAppBarScrollBehavior
+    scrollBehavior: TopAppBarScrollBehavior,
+    navigateAbout: () -> Unit
 ) {
     LargeTopAppBar(
         modifier = Modifier
@@ -158,6 +163,15 @@ fun TodoTopAppBar(
                         else R.drawable.visibility_off
                     ),
                     contentDescription = "Toggle Visibility",
+                    tint = MaterialTheme.colorScheme.tertiary
+                )
+            }
+            IconButton(onClick = {
+                navigateAbout()
+            }) {
+                Icon(
+                    Icons.Outlined.Info,
+                    contentDescription = "About app",
                     tint = MaterialTheme.colorScheme.tertiary
                 )
             }
