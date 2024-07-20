@@ -116,19 +116,6 @@ fun AddScreen(
                         text = stringResource(id = R.string.save),
                         modifier = Modifier.padding(end = 16.dp)
                     )
-                    /*TextButton(
-                        onClick = {
-                            viewModel.saveItem()
-                            navController.popBackStack()
-                        },
-                        modifier = Modifier.padding(end = 16.dp)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.save),
-                            color = MaterialTheme.colorScheme.tertiary,
-                            fontSize = 16.sp
-                        )
-                    }*/
                 }
             )
         }
